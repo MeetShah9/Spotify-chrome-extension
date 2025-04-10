@@ -1,0 +1,45 @@
+{
+  "name": "Spotify Lyrics Viewer",
+  "manifest_version": 3,
+  "version": "1.0",
+  "description": "View synced lyrics for the currently playing Spotify song.",
+  "permissions": [
+    "identity",
+    "storage",
+    "tabs",
+    "scripting"
+  ],
+  "oauth2": {
+    "client_id": "a24372a2aac644e2a46edc74e4a98353",
+    "scopes": [
+      "user-read-playback-state",
+      "user-read-currently-playing"
+    ]
+  },
+  "key": "3a8cec490f74497fa9090a19a27e6285",
+  "host_permissions": [
+    "https://api.spotify.com/*",
+    "https://accounts.spotify.com/*",
+    "https://api.genius.com/*",
+    "https://genius.com/*",
+    "http://localhost:3000/*",
+    "http://localhost:5001/*",
+      "https://chrome-extension-production-71f9.up.railway.app/"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  }
+}

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spotify Lyrics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --spotify-green: #1DB954;
+      --spotify-black: #121212;
+      --spotify-dark-gray: #181818;
+      --spotify-light-gray: #282828;
+      --spotify-white: #FFFFFF;
+    }
+
+    html, body {
+      width: 700px;
+      height: 500px;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--spotify-black);
+      color: var(--spotify-white);
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      padding: 20px;
+      box-sizing: border-box;
+      gap: 20px;
+    }
+
+    #auth-screen {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      overflow: hidden; /* 🚫 disables scroll on auth screen */
+      background: linear-gradient(145deg, #191414, #191414 60%, #1DB954 200%);
+      box-sizing: border-box;
+    }
+
+    .spotify-logo {
+      width: 140px;
+      margin-bottom: 35px;
+    }
+
+    .auth-title {
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .auth-description {
+      font-size: 18px;
+      font-weight: 400;
+      color: #b3b3b3;
+      max-width: 420px;
+      margin: 0 auto 30px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    #auth-button {
+      background-color: var(--spotify-green);
+      color: var(--spotify-black);
+      padding: 16px 36px;
+      border: none;
+      border-radius: 500px;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
+      margin: 0 auto;
+      display: block;
+    }
+
+    #auth-button:hover {
+      transform: scale(1.05);
+      background-color: #1ed760;
+    }
+
+    .left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .right {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .now-playing-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #b3b3b3;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 15px;
+    }
+
+    .album-art {
+      width: 100%;
+      max-width: 200px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .song-info-container {
+      width: 100%;
+      max-width: 200px;
+    }
+
+    .song-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .song-artist {
+      font-size: 14px;
+      color: #b3b3b3;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .lyrics-header {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 15px;
+      color: #b3b3b3;
+      border-bottom: 1px solid var(--spotify-light-gray);
+      padding-bottom: 10px;
+    }
+
+    .lyrics-box {
+      background-color: var(--spotify-dark-gray);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+      max-height: 100%;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .lyrics-text {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+    }
+
+    .lyric-section {
+      margin-bottom: 24px;
+      padding-bottom: 10px;
+      border-left: 3px solid #1db954;
+      padding-left: 12px;
+      transition: background 0.3s;
+    }
+
+    .lyric-section:hover {
+      background-color: rgba(29, 185, 84, 0.05);
+    }
+
+    #lyrics-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    #lyrics-container {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    #error-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      height: 100%;
+      padding: 30px;
+    }
+
+    .error-icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #b3b3b3;
+    }
+
+    .error-message h3 {
+      color: #ff4f4f;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .error-message p {
+      color: #b3b3b3;
+      font-size: 16px;
+    }
+
+    #reconnect-button {
+      background-color: #1db954;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s;
+    }
+
+    #reconnect-button:hover {
+      background-color: #1ed760;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--spotify-black);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--spotify-light-gray);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3e3e3e;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Auth screen -->
+  <div id="auth-screen">
+    <img src="images/spotify_logo.png" alt="Spotify" class="spotify-logo">
+    <h1 class="auth-title">Spotify Lyrics Viewer</h1>
+    <p class="auth-description">
+      Connect to your Spotify account to view lyrics for your currently playing songs.
+    </p>
+    <button id="auth-button">Connect to Spotify</button>
+  </div>
+
+  <!-- Player screen -->
+  <div class="container" id="player-screen" style="display: none;">
+    <div class="left">
+      <div class="now-playing-title">Now Playing</div>
+      <img id="album-art" class="album-art" src="" alt="Album Art">
+      <div class="song-info-container">
+        <div id="track-name" class="song-title">Track Name</div>
+        <div id="artist-name" class="song-artist">Artist Name</div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="lyrics-header">Lyrics</div>
+      <div class="lyrics-box">
+        <div id="lyrics-text" class="lyrics-text">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error screen -->
+  <div id="error-screen" style="display: none;">
+    <div class="error-icon">🎵</div>
+    <div class="error-message">
+      <h3>No song playing</h3>
+      <p>Start playing a song on Spotify to see lyrics.</p>
+      <button id="reconnect-button">Reconnect to Spotify</button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
