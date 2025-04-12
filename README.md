@@ -19,7 +19,7 @@ A sleek Chrome extension that displays **synchronized lyrics** for your currentl
 
 | Auth Screen | Player Screen |
 |-------------|---------------|
-| ![Auth Screen](screenshots/auth-screen.png) | ![Player Screen](screenshots/player-screen.png) |
+| ![Auth Screen](https://github.com/user-attachments/assets/d3ae789f-2089-42a5-b1b2-ceba4b1e9c81) | ![Player Screen](https://github.com/user-attachments/assets/da2f94b8-9851-4389-8f2e-089322c93e89) |
 
 ---
 
@@ -29,31 +29,59 @@ The extension connects with the **Spotify Web API** to fetch details of your cur
 
 ---
 
-## 🧱 Architecture Overview
+## ☁️ Hosting the Flask Lyrics API with Railway
 
-### 1. Background Service Worker
+To connect my Chrome extension to a backend for fetching and formatting lyrics, I built a custom Flask server and deployed it using **Railway**.
 
-- Handles **OAuth authentication**
-- Makes secure requests to the Spotify API
+### 🎯 Why Railway?
 
-### 2. Popup UI
-
-- Displays track name, artist, and album art
-- Fetches and renders synced lyrics
-- UI dynamically changes color based on album art using **Color Thief**
-
-### 3. Flask API Server
-
-- Accepts a track name and artist
-- Queries **Genius API** for lyrics
-- Cleans, formats, and serves them in structured sections
+I wanted a lightweight way to host a simple Python API without dealing with traditional server setup or deployment pipelines. Railway provides:
+It was perfect for quickly deploying my Flask server and getting a public URL that my extension could use.
 
 ---
 
-## 📦 Installation
+### 🧩 What My Flask Server Does
 
-### 🖥️ Chrome Extension Setup
+The server receives track metadata (title and artist) from the extension. Then:
 
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/yourusername/spotify-lyrics-viewer.git
+1. It uses the **Genius API** to search for the song's lyrics.
+2. Parses and cleans up the lyrics (removes metadata, sections like `[Chorus]`, etc.)
+3. Divides them into scrollable sections (inspired by how karaoke/teleprompters work).
+4. Sends the structured lyrics back as JSON.
+
+This separation between backend and frontend lets me keep the lyrics logic centralized and reuse it across both the Flask web app and the Chrome extension.
+
+---
+
+## 🔍 Flask API Response 
+
+When the Chrome extension sends a request to the Flask API with the song title and artist, it gets back a **cleaned, formatted JSON object** containing the lyrics.
+
+Here’s what that response looks like:
+
+> Example request :https://my-lyrics-api.up.railway.app/lyrics?title=Videotape&artist=Radiohead
+![JSON Response](https://github.com/user-attachments/assets/f7af1711-d80c-4c89-b1c4-7d86e2c3b416)
+
+## 🧼 Cleaning the Lyrics
+
+Before returning the lyrics to the extension, the Flask server performs the following cleaning steps:
+
+1. **Removes Contributor Metadata**  
+   Strips away any unnecessary contributor information, translation links, and ads.
+
+2. **Strips Section Tags**  
+   Removes section markers like `[Chorus]`, `[Verse 1]`, etc., to focus solely on the lyrics.
+
+3. **Replaces Smart Quotes and Weird Unicode**  
+   Converts smart quotes and other non-standard Unicode characters into clean, readable formatting.
+
+4. **Ensures Text is Newline-Separated**  
+   Ensures that the lyrics are formatted with newline characters for easier processing on the frontend, making it simpler to display and scroll lyrics dynamically.
+>Cleaned JSON
+>
+>![Cleaned JSON](https://github.com/user-attachments/assets/8a26fbed-22fa-4be4-94b6-579608d16a72)
+
+
+
+
+
