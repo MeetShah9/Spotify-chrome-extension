@@ -1,8 +1,8 @@
 // Spotify API credentials
-const SPOTIFY_CLIENT_ID = 'a24372a2aac644e2a46edc74e4a98353';
+const SPOTIFY_CLIENT_ID = '';
 const SPOTIFY_SCOPE = 'user-read-currently-playing user-read-playback-state user-read-playback-position' ;
 const SPOTIFY_REDIRECT_URI = chrome.identity.getRedirectURL();
-const GENIUS_TOKEN = 'U26XhBb1rHkRG6ewM-iUtrbiVrk0FqzORlFkVTkmuBu8SaPmQ7NgqmvfU6DhMuu8';
+const GENIUS_TOKEN = '';
 
 
 async function getCurrentTrack() {
