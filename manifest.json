@@ -10,13 +10,13 @@
     "scripting"
   ],
   "oauth2": {
-    "client_id": "a24372a2aac644e2a46edc74e4a98353",
+    "client_id": "",
     "scopes": [
       "user-read-playback-state",
       "user-read-currently-playing"
     ]
   },
-  "key": "3a8cec490f74497fa9090a19a27e6285",
+  "key": "",
   "host_permissions": [
     "https://api.spotify.com/*",
     "https://accounts.spotify.com/*",
