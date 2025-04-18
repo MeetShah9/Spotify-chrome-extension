@@ -11,7 +11,7 @@ A sleek Chrome extension that displays **synchronized lyrics** for your currentl
 - 📝 **Automatic lyrics fetching** via the Genius API  
 - 🔄 **Smooth auto-scrolling lyrics** synced with song progress  
 - 💾 **Lyrics caching** to minimize network requests  
-- 🎨 **Spotify-themed design** using dominant album colors  
+
 
 ---
 
